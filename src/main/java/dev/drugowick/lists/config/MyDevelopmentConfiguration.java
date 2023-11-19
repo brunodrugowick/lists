@@ -1,5 +1,7 @@
 package dev.drugowick.lists.config;
 
+import dev.drugowick.lists.domain.entity.MyList;
+import dev.drugowick.lists.service.MyListService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,16 +12,22 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @ConditionalOnProperty(name = "app.dev-mode", havingValue = "true")
 public class MyDevelopmentConfiguration {
 
-    public MyDevelopmentConfiguration() {}
+    private final MyListService myListService;
+    public MyDevelopmentConfiguration(MyListService myListService) {
+        this.myListService = myListService;
+    }
+
 
     @Bean
     DevData developmentData() {
-        return new DevData();
+        return new DevData(myListService);
     }
 }
 
@@ -66,14 +74,24 @@ class DevSecurityConfig {
  */
 class DevData {
 
-    public DevData() {
+    private final MyListService myListService;
+
+    public DevData(MyListService myListService) {
+        this.myListService = myListService;
         System.out.println("Adding development data.");
         addData(DevUtil.USERNAME);
         addData(DevUtil.STRANGER);
     }
 
     private void addData(String username) {
-        System.out.println("Not doing anything...");
+        List.of("This is a list", "This is another list").forEach(title -> {
+            var listItem = new MyList();
+            listItem.setTitle(title);
+            listItem.setDescription("'" + title + "' is a list that contains items of a list, the way a list should be.");
+            listItem.setUsername(username);
+            myListService.add(listItem);
+        });
+
     }
 }
 

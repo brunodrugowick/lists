@@ -15,14 +15,15 @@
     <div class="col-md-1"></div>
     <div class="container-fluid text-left col-md-10">
         <div class="mb-auto">
-            <h4 class="card-title">Active Lists</h4>
+            <h2 class="card-title">Active Lists
+                <a class="btn btn-primary" style="white-space: nowrap" href="/new">Add List</a>
+            </h2>
             <ul class="list-group">
-                <li class="list-group-item">List Item 1</li>
-                <li class="list-group-item">List Item 2</li>
-                <li class="list-group-item">List Item 3</li>
+                <li th:each="list : ${lists}" class="list-group-item">
+                    <h4 th:text="${list.title}"></h4>
+                    <p th:text="${list.description}"></p>
+                </li>
             </ul>
-            <br>
-            <a class="btn btn-primary" style="white-space: nowrap" href="/new">Add List</a>
         </div>
     </div>
     <div class="col-md-1"></div>

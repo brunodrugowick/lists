@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link href='/webjars/bootstrap/css/bootstrap.min.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+
+    <title>My Lists</title>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header (${useremail})}"></div>
+<br>
+
+<div class="container-fluid">
+    <div class="container-fluid text-left">
+        <div class="card mb-auto shadow-sm">
+            <div class="card-header">
+                <div class="card-title row">
+                    <h4 class="col col-sm-8">Active Lists</h4>
+                    <div class="float-right col col-sm-4">
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="chart_div"></div>
+                <br>
+                <a class="btn btn-primary"
+                   style="white-space: nowrap"
+                   href="/new">Add List</a>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+
+<div class="container-fluid" id="footer">
+    <br><br>
+</div>
+
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<script src="/webjars/htmx.org/dist/htmx.min.js"></script>
+</body>
+</html>

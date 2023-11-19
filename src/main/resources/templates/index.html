@@ -18,12 +18,7 @@
             <h2 class="card-title">Active Lists
                 <a class="btn btn-primary" style="white-space: nowrap" href="/new">Add List</a>
             </h2>
-            <ul class="list-group">
-                <li th:each="list : ${lists}" class="list-group-item">
-                    <h4 th:text="${list.title}"></h4>
-                    <p th:text="${list.description}"></p>
-                </li>
-            </ul>
+            <div hx-get="/lists" hx-trigger="load"></div>
         </div>
     </div>
     <div class="col-md-1"></div>

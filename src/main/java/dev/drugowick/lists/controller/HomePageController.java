@@ -17,8 +17,13 @@ public class HomePageController extends BaseController {
     }
 
     @RequestMapping("/")
-    public String homePage(Model model, Principal principal) {
-        model.addAttribute("lists", myListService.findAll(principal.getName()));
+    public String homePage() {
         return "index";
+    }
+
+    @RequestMapping("/lists")
+    public String lists(Model model, Principal principal) {
+        model.addAttribute("lists", myListService.findAll(principal.getName()));
+        return "fragments/main-list";
     }
 }

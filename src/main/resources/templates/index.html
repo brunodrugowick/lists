@@ -9,37 +9,45 @@
 <body>
 <div th:replace="~{fragments/header :: header (${useremail})}"></div>
 <br>
-<div id="errors" th:if="${errors != null}">
-    <div class="form-group alert alert-warning" th:each="err : ${errors}">
-        <span th:text="${err.getMessage}">An error</span>
-    </div>
-</div>
 <div class="container-fluid row">
-    <div class="col-md-1"></div>
-    <div class="container-fluid text-left col-md-10">
-        <div class="mb-auto">
-            <h2 class="card-title">Active Lists
-                <button hx-get="/lists/new"
-                        hx-target="#new-list-modal"
-                        hx-trigger="click"
-                        data-toggle="modal"
-                        data-target="#new-list-modal"
-                        class="btn btn-primary">New List</button>
-
-                <div th:id="new-list-modal"
-                     class="modal modal-blur fade"
-                     style="display: none"
-                     aria-hidden="false"
-                     tabindex="-1">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content"></div>
+    <div class="col-sm-1"></div>
+    <div class="container-fluid text-left col-sm-10">
+        <div class="row"><h2>Active Lists</h2></div>
+        <div class="row">
+            <div class="col-sm-12" hx-get="/lists" hx-trigger="load"></div>
+        </div>
+        <div class="row"><p></p></div>
+        <div class="row"><h2>New List</h2></div>
+        <div class="row">
+            <form class="container col-sm-12" th:object="${list}" th:method="post">
+                <div class="col-sm-12">
+                    <div class="form-group row">
+                        <textarea th:field="*{title}" class="form-control col-sm-3" id="title"
+                               placeholder="Title"
+                               type="text" rows="1" maxlength="144" autofocus></textarea>
+                        <div class="col-sm-1"></div>
+                        <textarea th:field="*{description}" class="form-control col-sm-6" id="description"
+                               placeholder="Description"
+                               type="text" rows="1" maxlength="400" autofocus></textarea>
+                        <div class="col-sm-1"></div>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button class="btn btn-primary col-sm-1" type="submit">Create</button>
+                    </div>
+                    <div th:if="${#fields.errors('*').size()}">
+                        <div class="form-group alert alert-warning" th:each="err : ${#fields.errors('*')}">
+                            <span th:text="${err}">An error</span>
+                        </div>
                     </div>
                 </div>
-            </h2>
-            <div hx-get="/lists" hx-trigger="load"></div>
+                <div id="errors" th:if="${errors != null}">
+                    <div class="form-group alert alert-warning" th:each="err : ${errors}">
+                        <span th:text="${err.getMessage}">An error</span>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="col-md-1"></div>
+    <div class="col-sm-1"></div>
 </div>
 
 <div class="container-fluid" id="footer">

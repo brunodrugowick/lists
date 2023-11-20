@@ -17,7 +17,5 @@ public class ListInput {
     @Length(max = 144, message = "Title should have less than 144 characters")
     private String title;
 
-    @NotBlank(message = "Description is mandatory")
-    @Length(max = 400, message = "Description should have less than 400 characters")
-    private String description;
+    private String description = "";
 }

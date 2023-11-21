@@ -1,6 +1,8 @@
 # Lists
 
-No cmplicated setup for a simple self-hosteable lists app.
+No complicated setup for a simple self-hosteable lists app.
+
+> _IMPORTANT_: This is now officially a playground for Thymeleaf with HTMX. It's a mess, but it's fine.
 
 ## Development Quick Start
 

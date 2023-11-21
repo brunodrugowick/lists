@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<form th:fragment="list-edit-single-item (list, item, _csrf.parameterName, _csrf.token)"
+      th:field="*{item}"
+      th:action="${'/lists/' + list.id + '/items/' + item.id}"
+      th:method="post"
+      th:id="${'list-item-' + item.getId()}"
+      class="container row">
+
+    <div class="col col-sm-8">
+        <textarea th:text="${item.description}"
+                  name="item"
+                  class="form-control"
+                  th:id="${'item-description-' + item.id}"
+                  placeholder="Item description"
+                  maxlength="144" autofocus
+                  rows="3"></textarea>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </div>
+    <div class="col col-sm-1"></div>
+    <div class="col col-sm-3">
+        <button class="btn btn-primary"
+                th:hx-post="${'/lists/' + list.id + '/items/' + item.id}"
+                th:hx-target="${'#list-item-' + item.getId()}"
+                th:hx:include="${'[item-description=''item-description-' + item.id + ''']'}"
+                type="submit">Update</button>
+        <button class="btn btn-danger"
+                th:hx-delete="${'/lists/' + list.id + '/items/' + item.id}"
+                hx-swap="delete"
+                th:hx-target="${'#list-item-' + item.getId()}">Delete</button>
+    </div>
+    <p>&nbsp;</p>
+</form>

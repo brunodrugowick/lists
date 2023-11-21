@@ -44,30 +44,9 @@
             </form>
         </div>
         <div class="row"><h2>List Items</h2></div>
-        <form th:each="item : ${list.getItems()}"
-              th:action="${'/lists/' + list.id + '/items/' + item.id}"
-              th:method="post"
-              th:id="${'list-item-' + item.getId()}"
-              class="container row">
-
-            <div class="col col-sm-8">
-                <textarea th:text="${item.description}"
-                          class="form-control"
-                          id="item-description"
-                          placeholder="Item description"
-                          maxlength="144" autofocus
-                          rows="3"></textarea>
-            </div>
-            <div class="col col-sm-1"></div>
-            <div class="col col-sm-3">
-                <button class="btn btn-primary" type="submit">Update</button>
-                <button class="btn btn-danger"
-                        th:hx-delete="${'/lists/' + list.id + '/items/' + item.id}"
-                        hx-swap="delete"
-                        th:hx-target="${'#list-item-' + item.getId()}">Delete</button>
-            </div>
-            <p>&nbsp;</p>
-        </form>
+        <div th:each="item : ${list.getItems()}">
+            <div th:replace="~{fragments/list-edit-single-item :: list-edit-single-item (${list}, ${item}, ${_csrf.parameterName}, ${_csrf.token})}"></div>
+        </div>
     </div>
     <div class="col-sm-1"></div>
 </div>

@@ -59,6 +59,31 @@ public class ListController {
         return "list";
     }
 
+    @RequestMapping(value = "/{list-uuid}/items/{item-uuid}", method = RequestMethod.POST)
+    public String updateListItem(@PathVariable("list-uuid") UUID listUuid,
+                                 @PathVariable("item-uuid") UUID itemUuid,
+                                 @ModelAttribute("item") String itemNewText,
+                                 Model model,
+                                 Principal principal) {
+        var listToUpdate = listService.findByUUID(listUuid, principal.getName());
+        var itemToUpdate = listToUpdate.getItems().
+                stream().
+                filter(i -> itemUuid.equals(i.getId())).
+                findAny().orElseThrow();
+        if (itemNewText.isBlank()) {
+            model.addAttribute("list", listToUpdate);
+            model.addAttribute("item", itemToUpdate);
+            return "fragments/list-edit-single-item";
+        }
+
+        itemToUpdate.setDescription(itemNewText);
+        listService.add(listToUpdate);
+
+        model.addAttribute("list", listToUpdate);
+        model.addAttribute("item", itemToUpdate);
+        return "fragments/list-edit-single-item";
+    }
+
     @RequestMapping(value = "/{list-uuid}/items/{item-uuid}", method = RequestMethod.DELETE)
     public String deleteListItem(@PathVariable("list-uuid") UUID listUuid,
                                  @PathVariable("item-uuid") UUID itemUuid,

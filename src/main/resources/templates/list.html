@@ -12,21 +12,16 @@
 <div class="container-fluid row">
     <div class="col-sm-1"></div>
     <div class="container-fluid text-left col-sm-10">
-        <div class="row"><h2>Active Lists</h2></div>
-        <div class="row">
-            <div class="col-sm-12" hx-get="/lists" hx-trigger="load"></div>
-        </div>
-        <div class="row"><p></p></div>
-        <div class="row"><h2>New List</h2></div>
+        <div class="row"><h2>List Details</h2></div>
         <div class="row">
             <form class="container col-sm-12" th:object="${list}" th:method="post">
                 <div class="col-sm-12">
                     <div class="form-group row">
                         <input th:field="*{title}" class="form-control col-sm-9" id="title"
                                placeholder="Title"
-                               type="text" maxlength="144" autofocus />
+                               type="text" maxlength="144" autofocus></input>
                         <div class="col-sm-1"></div>
-                        <button class="btn btn-primary col-sm-2" type="submit">Create</button>
+                        <button class="btn btn-primary col-sm-2" type="submit">Update</button>
                     </div>
                     <div class="form-group row">
                         <textarea th:field="*{description}" class="form-control col-sm-12"
@@ -43,11 +38,36 @@
                 </div>
                 <div id="errors" th:if="${errors != null}">
                     <div class="form-group alert alert-warning" th:each="err : ${errors}">
-                        <span th:text="${err.getMessage}">An error</span>
+                        <span th:text="${err.defaultMessage}">An error</span>
                     </div>
                 </div>
             </form>
         </div>
+        <div class="row"><h2>List Items</h2></div>
+        <form th:each="item : ${list.getItems()}"
+              th:action="${'/lists/' + list.id + '/items/' + item.id}"
+              th:method="post"
+              th:id="${'list-item-' + item.getId()}"
+              class="container row">
+
+            <div class="col col-sm-8">
+                <textarea th:text="${item.description}"
+                          class="form-control"
+                          id="item-description"
+                          placeholder="Item description"
+                          maxlength="144" autofocus
+                          rows="3"></textarea>
+            </div>
+            <div class="col col-sm-1"></div>
+            <div class="col col-sm-3">
+                <button class="btn btn-primary" type="submit">Update</button>
+                <button class="btn btn-danger"
+                        th:hx-delete="${'/lists/' + list.id + '/items/' + item.id}"
+                        hx-swap="delete"
+                        th:hx-target="${'#list-item-' + item.getId()}">Delete</button>
+            </div>
+            <p>&nbsp;</p>
+        </form>
     </div>
     <div class="col-sm-1"></div>
 </div>

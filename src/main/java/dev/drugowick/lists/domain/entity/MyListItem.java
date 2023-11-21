@@ -5,8 +5,6 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -16,33 +14,21 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "lists")
-public class MyList {
+@Table(name = "items")
+public class MyListItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String title;
     private String description;
     private boolean active = true;
 
-    @OneToMany(mappedBy = "list",
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<MyListItem> items = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "list_id", nullable = false)
+    private MyList list;
 
     @CreatedDate
     private Long createdDate;
 
-    private String username;
-
-    public void addItem(MyListItem item) {
-        this.items.add(item);
-    }
-
-    public void removeItemByUUID(UUID itemUUID) {
-        items.removeIf(item -> item.getId().equals(itemUUID));
-    }
 }

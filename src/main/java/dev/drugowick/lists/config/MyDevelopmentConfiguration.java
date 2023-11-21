@@ -1,6 +1,7 @@
 package dev.drugowick.lists.config;
 
 import dev.drugowick.lists.domain.entity.MyList;
+import dev.drugowick.lists.domain.entity.MyListItem;
 import dev.drugowick.lists.service.MyListService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -85,11 +86,18 @@ class DevData {
 
     private void addData(String username) {
         List.of("This is a list", "This is another list").forEach(title -> {
-            var listItem = new MyList();
-            listItem.setTitle(title);
-            listItem.setDescription("'" + title + "' is a list that contains items of a list, the way a list should be.");
-            listItem.setUsername(username);
-            myListService.add(listItem);
+            var list = new MyList();
+            list.setTitle(title);
+            list.setDescription("'" + title + "' is a list that contains items of a list, the way a list should be.");
+            list.setUsername(username);
+
+            List.of("This is an item", "This is yet another item").forEach(itemTitle -> {
+                var item = new MyListItem();
+                item.setList(list);
+                item.setDescription(itemTitle);
+                list.addItem(item);
+            });
+            myListService.add(list);
         });
 
     }

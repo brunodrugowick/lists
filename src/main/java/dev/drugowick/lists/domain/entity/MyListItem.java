@@ -21,7 +21,9 @@ public class MyListItem {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(length = 4000)
     private String description;
+
     private boolean active = true;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)

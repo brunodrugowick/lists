@@ -23,7 +23,10 @@ public class MyList {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(length = 144)
     private String title;
+
+    @Column(length = 400)
     private String description;
     private boolean active = true;
 

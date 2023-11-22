@@ -22,12 +22,14 @@
         <button class="btn btn-primary"
                 th:hx-post="${'/lists/' + list.id + '/items/' + item.id}"
                 th:hx-target="${'#list-item-' + item.getId()}"
+                hx-swap="outerHTML"
                 th:hx:include="${'[item-description=''item-description-' + item.id + ''']'}"
                 type="submit">Update</button>
         <button class="btn btn-danger"
                 th:hx-delete="${'/lists/' + list.id + '/items/' + item.id}"
                 hx-swap="delete"
                 th:hx-target="${'#list-item-' + item.getId()}">Delete</button>
+        <span th:if="${toast == true}" class="badge badge-secondary">Item saved</span>
     </div>
     <p>&nbsp;</p>
 </form>

@@ -81,6 +81,7 @@ public class ListController {
 
         model.addAttribute("list", listToUpdate);
         model.addAttribute("item", itemToUpdate);
+        model.addAttribute("toast", true);
         return "fragments/list-edit-single-item";
     }
 

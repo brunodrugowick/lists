@@ -1,4 +1,4 @@
-package dev.drugowick.lists.dto;
+package dev.drugowick.lists.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

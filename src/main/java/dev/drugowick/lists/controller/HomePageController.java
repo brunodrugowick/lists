@@ -1,7 +1,7 @@
 package dev.drugowick.lists.controller;
 
 import dev.drugowick.lists.domain.entity.MyList;
-import dev.drugowick.lists.dto.ListInput;
+import dev.drugowick.lists.controller.dto.ListInput;
 import dev.drugowick.lists.service.MyListService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;

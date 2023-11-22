@@ -1,6 +1,8 @@
 package dev.drugowick.lists.controller;
 
-import dev.drugowick.lists.dto.ListInput;
+import dev.drugowick.lists.controller.dto.ListItemInput;
+import dev.drugowick.lists.domain.entity.MyListItem;
+import dev.drugowick.lists.controller.dto.ListInput;
 import dev.drugowick.lists.service.MyListService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -56,6 +58,7 @@ public class ListController {
     public String getList(@PathVariable("uuid") UUID uuid, Model model, Principal principal) {
         var list = listService.findByUUID(uuid, principal.getName());
         model.addAttribute("list", list);
+        model.addAttribute("newitem", new MyListItem());
         return "list";
     }
 
@@ -94,6 +97,28 @@ public class ListController {
         list.getItems().removeIf(myListItem -> myListItem.getId().equals(itemUuid));
         listService.deleteItem(listUuid, itemUuid, principal.getName());
         model.addAttribute("list", list);
+        model.addAttribute("newitem", new MyListItem());
+        return "list";
+    }
+
+    @RequestMapping(value = "/{list-uuid}/items", method = RequestMethod.POST)
+    public String createListItem(@PathVariable("list-uuid") UUID listUuid,
+                                 @ModelAttribute("newitem") @Valid ListItemInput newItem,
+                                 BindingResult bindingResult,
+                                 Model model,
+                                 Principal principal) {
+        var listToUpdate = listService.findByUUID(listUuid, principal.getName());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("list", listToUpdate);
+            model.addAttribute("itemerrors", bindingResult.getFieldErrors());
+            return "list";
+        }
+
+        listToUpdate.getItems().add(Mapper.toListItem(newItem, listToUpdate));
+        var updatedList = listService.add(listToUpdate);
+        model.addAttribute("list", updatedList);
+        model.addAttribute("newitem", new MyListItem());
+        model.addAttribute("errors", null);
         return "list";
     }
 }

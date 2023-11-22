@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/lists")
-public class ListController {
+public class ListController extends BaseController{
 
     private final MyListService listService;
 
@@ -38,6 +38,7 @@ public class ListController {
             Model model,
             Principal principal) {
         var listToUpdate = listService.findByUUID(uuid, principal.getName());
+        model.addAttribute("newitem", new MyListItem());
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("list", listToUpdate);

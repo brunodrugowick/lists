@@ -10,7 +10,6 @@
 
 <div th:replace="~{fragments/header :: header (${useremail})}"></div>
 <br>
-
 <div class="container-fluid">
     <div class="container-fluid text-left">
         <br>
@@ -19,10 +18,12 @@
                 <div class="col-sm-6">
                     <div class="card mb-auto shadow-sm">
                         <div class="card-header">
-                            <h4 class="card-title">User Summary</h4>
+                            <h4 class="card-title">Users</h4>
                         </div>
                         <div class="card-body">
-                            <div id="table_usermeasurements_div"></div>
+                            <div th:each="user : ${users}" id="users">
+                                <p th:text="${user.name}"></p>
+                            </div>
                         </div>
                     </div>
                 </div>

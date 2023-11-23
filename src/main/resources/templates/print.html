@@ -12,7 +12,7 @@
 <ul class="list-group">
     <li th:each="item : ${list.getItems()}" class="list-group-item">
         <div class="row">
-            <p th:text="${item.description}"></p>
+            <div style="white-space: pre-wrap;" th:text="${item.description}"></div>
         </div>
     </li>
 </ul>

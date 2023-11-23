@@ -15,18 +15,12 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/lists")
-public class ListController extends BaseController{
+public class ListPageController extends BaseController{
 
     private final MyListService listService;
 
-    public ListController(MyListService listService) {
+    public ListPageController(MyListService listService) {
         this.listService = listService;
-    }
-
-    @GetMapping
-    public String lists(Model model, Principal principal) {
-        model.addAttribute("lists", listService.findAll(principal.getName()));
-        return "fragments/main-list";
     }
 
     @RequestMapping(value = "/{uuid}", method = RequestMethod.POST)
@@ -61,32 +55,6 @@ public class ListController extends BaseController{
         model.addAttribute("list", list);
         model.addAttribute("newitem", new MyListItem());
         return "list";
-    }
-
-    @RequestMapping(value = "/{list-uuid}/items/{item-uuid}", method = RequestMethod.POST)
-    public String updateListItem(@PathVariable("list-uuid") UUID listUuid,
-                                 @PathVariable("item-uuid") UUID itemUuid,
-                                 @ModelAttribute("item") String itemNewText,
-                                 Model model,
-                                 Principal principal) {
-        var listToUpdate = listService.findByUUID(listUuid, principal.getName());
-        var itemToUpdate = listToUpdate.getItems().
-                stream().
-                filter(i -> itemUuid.equals(i.getId())).
-                findAny().orElseThrow();
-        if (itemNewText.isBlank()) {
-            model.addAttribute("list", listToUpdate);
-            model.addAttribute("item", itemToUpdate);
-            return "fragments/list-edit-single-item";
-        }
-
-        itemToUpdate.setDescription(itemNewText);
-        listService.add(listToUpdate);
-
-        model.addAttribute("list", listToUpdate);
-        model.addAttribute("item", itemToUpdate);
-        model.addAttribute("toast", true);
-        return "fragments/list-edit-single-item";
     }
 
     @RequestMapping(value = "/{list-uuid}/items/{item-uuid}", method = RequestMethod.DELETE)

@@ -1,7 +1,5 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <link href='/webjars/bootstrap/css/bootstrap.min.css' rel='stylesheet'>
-</head>
+<div class="row"><h2>Active Lists</h2></div>
 <ul class="list-group">
     <li th:each="list : ${lists}" class="list-group-item">
         <div class="row">
@@ -16,4 +14,3 @@
         <p th:text="${list.description}"></p>
     </li>
 </ul>
-<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>

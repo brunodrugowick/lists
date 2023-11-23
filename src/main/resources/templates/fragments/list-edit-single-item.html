@@ -21,7 +21,7 @@
     <div class="col col-sm-1"></div>
     <div class="col col-sm-3">
         <button class="btn btn-primary"
-                th:hx-post="${'/lists/' + list.id + '/items/' + item.id}"
+                th:hx-post="${'/fragments/lists/' + list.id + '/items/' + item.id}"
                 th:hx-target="${'#list-item-' + item.getId()}"
                 hx-swap="outerHTML"
                 th:hx:include="${'[item-description=''item-description-' + item.id + ''']'}"

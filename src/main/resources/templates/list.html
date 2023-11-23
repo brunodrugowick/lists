@@ -12,6 +12,7 @@
 <div class="container-fluid row">
     <div class="col-sm-1"></div>
     <div class="container-fluid text-left col-sm-10">
+        <div class="row"><a th:href="${'/print/' + list.id}">Print</a></div>
         <div class="row"><h2>List Details</h2></div>
         <div class="row">
             <form class="container col-sm-12" th:object="${list}" th:method="post">

@@ -3,7 +3,6 @@
 <head>
     <link href='/webjars/bootstrap/css/bootstrap.min.css' rel='stylesheet'>
     <meta charset="UTF-8">
-
     <title>My Lists</title>
 </head>
 <body>
@@ -13,63 +12,14 @@
     <div class="col-sm-1"></div>
     <div class="container-fluid text-left col-sm-10">
         <div class="row"><a th:href="${'/print/' + list.id}">Print</a></div>
-        <div class="row"><h2>List Details</h2></div>
         <div class="row">
-            <form class="container col-sm-12" th:object="${list}" th:method="post">
-                <div class="col-sm-12">
-                    <div class="form-group row">
-                        <input th:field="*{title}" class="form-control col-sm-9" id="title"
-                               placeholder="Title"
-                               type="text" maxlength="144" autofocus></input>
-                        <div class="col-sm-1"></div>
-                        <button class="btn btn-primary col-sm-2" type="submit">Update</button>
-                    </div>
-                    <div class="form-group row">
-                        <textarea th:field="*{description}" class="form-control col-sm-12"
-                                  id="description" placeholder="Optional description"
-                                  rows="5" maxlength="400" autofocus></textarea>
-                        <div class="col-sm-1"></div>
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                    </div>
-                    <div th:if="${#fields.errors('*').size()}">
-                        <div class="form-group alert alert-warning" th:each="err : ${#fields.errors('*')}">
-                            <span th:text="${err}">An error</span>
-                        </div>
-                    </div>
-                </div>
-                <div id="errors" th:if="${errors != null}">
-                    <div class="form-group alert alert-warning" th:each="err : ${errors}">
-                        <span th:text="${err.defaultMessage}">An error</span>
-                    </div>
-                </div>
-            </form>
+            <div class="col-sm-12" th:hx-get="${'/fragments/lists/' + list.id + '/editable-details'}" hx-trigger="load"></div>
         </div>
-        <div class="row"><h2>List Items</h2></div>
-        <div th:each="item : ${list.getItems()}">
-            <div th:replace="~{fragments/list-edit-single-item :: list-edit-single-item (${list}, ${item}, ${_csrf.parameterName}, ${_csrf.token})}"></div>
-        </div>
-        <div class="row"><h2>New List Item</h2></div>
         <div class="row">
-            <form class="container col-sm-12" th:object="${newitem}" th:method="post" th:action="${'/lists/' + list.id + '/items'}">
-                <div class="col-sm-12">
-                    <div class="form-group row">
-                        <input th:field="*{description}"
-                               class="form-control col-sm-9"
-                               id="itemdescription"
-                               placeholder="Description"
-                               maxlength="4000"
-                               type="text" autofocus />
-                        <div class="col-sm-1"></div>
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                        <button class="btn btn-primary col-sm-2" type="submit">New Item</button>
-                    </div>
-                    <div th:if="${#fields.errors('*').size()}">
-                        <div class="form-group alert alert-warning" th:each="err : ${#fields.errors('*')}">
-                            <span th:text="${err}">An error</span>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <div class="col-sm-12" th:hx-get="${'/fragments/lists/' + list.id + '/items'}" hx-trigger="load"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12" th:hx-get="${'/fragments/lists/' + list.id + '/items/new'}" hx-trigger="load"></div>
         </div>
     </div>
     <div class="col-sm-1"></div>

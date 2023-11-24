@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<form th:fragment="list-edit-single-item (list, item, _csrf.parameterName, _csrf.token)"
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<form th:fragment="list-item-editable (list, item, _csrf.parameterName, _csrf.token)"
       th:field="*{item}"
       th:action="${'/lists/' + list.id + '/items/' + item.id}"
       th:method="post"

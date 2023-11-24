@@ -24,7 +24,6 @@ public class ListPageController extends BaseController{
     }
 
     @RequestMapping(value = "/{uuid}", method = RequestMethod.POST)
-    @PostMapping
     public String updateList(
             @PathVariable("uuid") UUID uuid,
             @ModelAttribute("list") @Valid ListInput changedList,

@@ -1,6 +1,7 @@
 package dev.drugowick.lists.controller;
 
 import dev.drugowick.lists.domain.entity.MyList;
+import dev.drugowick.lists.domain.entity.MyListItem;
 import dev.drugowick.lists.service.MyListService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,16 +23,35 @@ public class ListFragmentsController {
         this.listService = listService;
     }
 
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public String getNewList(Model model) {
+        model.addAttribute("list", new MyList());
+        return "fragments/new-list";
+    }
+
+    @RequestMapping(value = "{uuid}/items/new", method = RequestMethod.GET)
+    public String getNewListItem(@PathVariable("uuid") UUID uuid, Model model, Principal principal) {
+        model.addAttribute("list", listService.findByUUID(uuid, principal.getName()));
+        model.addAttribute("item", new MyListItem());
+        return "fragments/new-list-item";
+    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String getListOfLists(Model model, Principal principal) {
         model.addAttribute("lists", listService.findAll(principal.getName()));
         return "fragments/lists-list";
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String getNewList(Model model) {
-        model.addAttribute("list", new MyList());
-        return "fragments/new-list";
+    @RequestMapping(value = "{uuid}/editable-details", method = RequestMethod.GET)
+    public String getEditableListDetails(@PathVariable("uuid") UUID uuid, Model model, Principal principal) {
+        model.addAttribute("list", listService.findByUUID(uuid, principal.getName()));
+        return "fragments/list-details-editable";
+    }
+
+    @RequestMapping(value = "{uuid}/items", method = RequestMethod.GET)
+    public String getEditableListItems(@PathVariable("uuid") UUID uuid, Model model, Principal principal) {
+        model.addAttribute("list", listService.findByUUID(uuid, principal.getName()));
+        return "fragments/list-items-editable";
     }
 
     @RequestMapping(value = "/{list-uuid}/items/{item-uuid}", method = RequestMethod.POST)
@@ -48,7 +68,7 @@ public class ListFragmentsController {
         if (itemNewText.isBlank()) {
             model.addAttribute("list", listToUpdate);
             model.addAttribute("item", itemToUpdate);
-            return "fragments/list-edit-single-item";
+            return "fragments/list-item-editable";
         }
 
         itemToUpdate.setDescription(itemNewText);
@@ -57,6 +77,6 @@ public class ListFragmentsController {
         model.addAttribute("list", listToUpdate);
         model.addAttribute("item", itemToUpdate);
         model.addAttribute("toast", true);
-        return "fragments/list-edit-single-item";
+        return "fragments/list-item-editable";
     }
 }

@@ -1,5 +1,5 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <div class="row"><h2>List Items</h2></div>
-<div th:each="item : ${list.getItems()}">
+<div class="row" th:each="item : ${list.getItems()}">
     <div th:replace="~{fragments/list-item-editable :: list-item-editable (${list}, ${item}, ${_csrf.parameterName}, ${_csrf.token})}"></div>
 </div>

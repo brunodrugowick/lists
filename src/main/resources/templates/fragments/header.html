@@ -1,5 +1,5 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
-<body th:fragment="header (useremail)">
+<body th:fragment="header (useremail, list)">
 
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top shadow-sm" th:fragment="header">
   <a class="navbar-brand mb-0 h1" href="/">
@@ -13,7 +13,21 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item">
-        <a class="nav-link" href="/">My Lists</a>
+        <a class="nav-link" href="/">All Lists</a>
+      </li>
+      <li th:if="${list != null}" class="nav-item dropdown">
+        <a th:text="${'[' + list.title + ']'}"
+           class="nav-link dropdown-toggle" href="#" id="listActions"
+           role="button" data-toggle="dropdown" aria-haspopup="true"
+           aria-expanded="false">
+          Current List
+        </a>
+        <div class="dropdown-menu" aria-labelledby="listActions">
+          <a class="dropdown-item" th:href="${'/lists/' + list.id}">Active Items</a>
+          <a class="dropdown-item" th:href="${'/archive/' + list.id}">Archived Items</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" th:href="${'/print/' + list.id}">Print List</a>
+        </div>
       </li>
       <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
         <a class="nav-link" href="/admin">Admin Dashboard</a>

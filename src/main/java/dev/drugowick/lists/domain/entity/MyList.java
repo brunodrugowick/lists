@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 @Getter
 @Setter
@@ -45,7 +46,31 @@ public class MyList {
         this.items.add(item);
     }
 
-    public void removeItemByUUID(UUID itemUUID) {
-        items.removeIf(item -> item.getId().equals(itemUUID));
+    public List<MyListItem> getItems() {
+        var items = this.items.stream()
+                .filter(MyListItem::isActive)
+                .toList();
+        return items;
+    }
+
+    public List<MyListItem> getArchivedItems() {
+        var items = this.items.stream()
+                .filter(Predicate.not(MyListItem::isActive))
+                .toList();
+        return items;
+    }
+
+    public void deactivateItemByUUID(UUID itemUUID) {
+        items.stream()
+                .filter(item -> item.getId().equals(itemUUID))
+                .findFirst()
+                .ifPresent(MyListItem::deactivate);
+    }
+
+    public void activateItemByUUID(UUID itemUUID) {
+        items.stream()
+                .filter(item -> item.getId().equals(itemUUID))
+                .findFirst()
+                .ifPresent(MyListItem::activate);
     }
 }

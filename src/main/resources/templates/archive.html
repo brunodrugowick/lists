@@ -6,17 +6,13 @@
     <title>My Lists</title>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header (${useremail}, ${null})}"></div>
+<div th:replace="~{fragments/header :: header (${useremail}, ${list})}"></div>
 <br>
 <div class="container-fluid row">
     <div class="col-sm-1"></div>
     <div class="container-fluid text-left col-sm-10">
         <div class="row">
-            <div class="col-sm-12" hx-get="/fragments/lists" hx-trigger="load"></div>
-        </div>
-        <div class="row"><p></p></div>
-        <div class="row">
-            <div class="col-sm-12" hx-get="/fragments/lists/new" hx-trigger="load"></div>
+            <div class="col-sm-12" th:hx-get="${'/fragments/archive/' + list.id}" hx-trigger="load"></div>
         </div>
     </div>
     <div class="col-sm-1"></div>

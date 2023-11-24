@@ -29,11 +29,20 @@ public class MyListService {
     }
 
     @Transactional
-    public void deleteItem(UUID listId, UUID itemId, String username) {
+    public MyList archiveItem(UUID listId, UUID itemId, String username) {
         var listOptional = this.repository.findOneByIdAndUsername(listId, username);
         listOptional.ifPresent(myList -> {
-            myList.removeItemByUUID(itemId);
-            this.repository.save(myList);
+            myList.deactivateItemByUUID(itemId);
         });
+        return this.repository.save(listOptional.orElseThrow());
+    }
+
+    @Transactional
+    public MyList restoreItem(UUID listId, UUID itemId, String username) {
+        var listOptional = this.repository.findOneByIdAndUsername(listId, username);
+        listOptional.ifPresent(myList -> {
+            myList.activateItemByUUID(itemId);
+        });
+        return this.repository.save(listOptional.orElseThrow());
     }
 }

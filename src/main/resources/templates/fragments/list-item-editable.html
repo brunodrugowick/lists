@@ -1,6 +1,5 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<form class="container col-sm-12"
-      th:fragment="list-item-editable (list, item, _csrf.parameterName, _csrf.token)"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<form th:fragment="list-item-editable (list, item, _csrf)" class="container col-sm-12"
       th:field="*{item}"
       th:action="${'/lists/' + list.id + '/items/' + item.id}"
       th:method="post"
@@ -23,12 +22,12 @@
                         hx-swap="outerHTML"
                         th:hx:include="${'[item-description=''item-description-' + item.id + ''']'}"
                         type="submit">Update</button>
+                <span th:if="${toast == true}" class="badge badge-secondary">Item saved</span>
                 <br><br>
-                <button class="btn btn-danger form-control float-right"
+                <button class="btn btn-warning form-control float-right"
                         th:hx-delete="${'/lists/' + list.id + '/items/' + item.id}"
                         hx-swap="delete"
-                        th:hx-target="${'#list-item-' + item.getId()}">Delete</button>
-                <span th:if="${toast == true}" class="badge badge-secondary">Item saved</span>
+                        th:hx-target="${'#list-item-' + item.getId()}">Archive</button>
             </div>
         </div>
     </div>

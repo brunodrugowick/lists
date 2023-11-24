@@ -33,4 +33,11 @@ public class MyListItem {
     @CreatedDate
     private Long createdDate;
 
+    public void deactivate() {
+        this.active = false;
+    }
+
+    public void activate() {
+        this.active = true;
+    }
 }

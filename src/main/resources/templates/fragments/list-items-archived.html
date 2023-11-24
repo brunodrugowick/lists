@@ -1,0 +1,5 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<div class="row"><h2>Archived Items</h2></div>
+<div class="row" th:each="item : ${list.getArchivedItems()}" id="archiveditems">
+    <div th:replace="~{fragments/list-item-archived :: list-item-archived (${list}, ${item}, ${_csrf})}"></div>
+</div>

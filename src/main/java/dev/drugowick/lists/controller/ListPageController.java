@@ -57,13 +57,24 @@ public class ListPageController extends BaseController{
     }
 
     @RequestMapping(value = "/{list-uuid}/items/{item-uuid}", method = RequestMethod.DELETE)
-    public String deleteListItem(@PathVariable("list-uuid") UUID listUuid,
-                                 @PathVariable("item-uuid") UUID itemUuid,
-                                 Model model,
-                                 Principal principal) {
+    public String archiveListItem(@PathVariable("list-uuid") UUID listUuid,
+                                  @PathVariable("item-uuid") UUID itemUuid,
+                                  Model model,
+                                  Principal principal) {
         var list = listService.findByUUID(listUuid, principal.getName());
-        list.getItems().removeIf(myListItem -> myListItem.getId().equals(itemUuid));
-        listService.deleteItem(listUuid, itemUuid, principal.getName());
+        var modifiedList = listService.archiveItem(list.getId(), itemUuid, principal.getName());
+        model.addAttribute("list", modifiedList);
+        model.addAttribute("newitem", new MyListItem());
+        return "list";
+    }
+
+    @RequestMapping(value = "/{list-uuid}/items/{item-uuid}/recovery", method = RequestMethod.POST)
+    public String recoverListItem(@PathVariable("list-uuid") UUID listUuid,
+                                  @PathVariable("item-uuid") UUID itemUuid,
+                                  Model model,
+                                  Principal principal) {
+        var list = listService.findByUUID(listUuid, principal.getName());
+        listService.restoreItem(listUuid, itemUuid, principal.getName());
         model.addAttribute("list", list);
         model.addAttribute("newitem", new MyListItem());
         return "list";
@@ -82,7 +93,7 @@ public class ListPageController extends BaseController{
             return "list";
         }
 
-        listToUpdate.getItems().add(Mapper.toListItem(newItem, listToUpdate));
+        listToUpdate.addItem(Mapper.toListItem(newItem, listToUpdate));
         var updatedList = listService.add(listToUpdate);
         model.addAttribute("list", updatedList);
         model.addAttribute("newitem", new MyListItem());

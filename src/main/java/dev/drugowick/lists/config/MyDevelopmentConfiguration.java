@@ -97,6 +97,15 @@ class DevData {
                 item.setDescription(itemTitle);
                 list.addItem(item);
             });
+
+            List.of("This is an archived item", "This is yet another archived item").forEach(itemTitle -> {
+                var item = new MyListItem();
+                item.setList(list);
+                item.setDescription(itemTitle);
+                item.deactivate();
+                list.addItem(item);
+            });
+
             myListService.add(list);
         });
 
